@@ -104,14 +104,8 @@ class UnetAdaptiveBins(nn.Module):
             nn.Softmax(dim=1)
         )
 
-        self.extra = nn.Sequential(
-            nn.Conv2d(128, 64, kernel_size=3, stride=1, padding=1),
-            nn.Conv2d(64, 14, kernel_size=3, stride=1, padding=1)
-        )
-
     def forward(self, x, **kwargs):
         unet_out = self.decoder(self.encoder(x), **kwargs)
-        pred_seg = self.extra(unet_out)
         bin_widths_normed, range_attention_maps = self.adaptive_bins_layer(unet_out)
         out = self.conv_out(range_attention_maps)
 
@@ -125,7 +119,7 @@ class UnetAdaptiveBins(nn.Module):
 
         pred_depth = torch.sum(out * centers, dim=1, keepdim=True)
 
-        return bin_edges, pred_depth, pred_seg
+        return bin_edges, pred_depth
 
     def get_1x_lr_params(self):  # lr/10 learning rate
         return self.encoder.parameters()

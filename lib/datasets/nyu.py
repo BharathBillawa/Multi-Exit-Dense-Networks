@@ -21,7 +21,7 @@ class NYUDataset(data.Dataset):
     """PyTorch wrapper class for NYU Dataset.
     Highlights: 
           ¤ Segmentation labels are mapped to 13 target classes.
-          ¤ Availabe target type: 'semantic' and 'depth'
+          ¤ Available target types: 'semantic' and 'depth'
           ¤ 'split' specifies data split, which is either 'train' or 'val'
 
     Required folder structure:
